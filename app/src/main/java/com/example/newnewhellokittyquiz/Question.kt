@@ -1,3 +1,2 @@
-
-
-data class Question(val textReID: Int, val answer: Boolean);
+//Testing my commit - Lucas
+data class Question(val textReID: Int, val answer: Boolean)
