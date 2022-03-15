@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import com.example.newnewhellokittyquiz.R
 
-private const val EXTRA_ANSWER_IS_TRUE = "com.nikita.android.HelloKittyQuiz.answer_is_true"
-const val EXTRA_ANSWER_SHOWN = "com.nikita.android.HelloKittyQuiz.answer_shown"
+private const val EXTRA_ANSWER_IS_TRUE = "com.nikita.android.NewNewHelloKittyQuiz.answer_is_true"
+const val EXTRA_ANSWER_SHOWN = "com.nikita.android.NewNewHelloKittyQuiz.answer_shown"
 
 class CheatActivity : AppCompatActivity() {
     private lateinit var answerTextView: TextView;

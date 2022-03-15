@@ -1,3 +1,3 @@
-//Testing my commit - Lucas
+package com.example.newnewhellokittyquiz
 
-data class Question(val textReID: Int, val answer: Boolean)
+data class Question(val textReID: Int, val answer: Boolean);
