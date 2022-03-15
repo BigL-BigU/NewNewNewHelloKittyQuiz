@@ -1,8 +1,6 @@
 package com.example.newnewhellokittyquiz
 
-import Question
-import android.app.Activity
-import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,9 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.example.newnewhellokittyquiz.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
@@ -39,6 +35,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
         setContentView(R.layout.activity_main)
+
+        val music = MediaPlayer.create(this, R.raw.hellokittytheme);
+        music?.start();
 
         val currentIndex = savedInstanceState?.getInt(keyIndex, 0) ?: 0;
         quizViewModel.currentIndex = currentIndex;

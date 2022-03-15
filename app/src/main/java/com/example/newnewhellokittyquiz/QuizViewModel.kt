@@ -1,8 +1,6 @@
 package com.example.newnewhellokittyquiz
 
-import Question
 import androidx.lifecycle.ViewModel;
-import com.example.newnewhellokittyquiz.R
 
 class QuizViewModel: ViewModel() {
     private val questionList = listOf(
