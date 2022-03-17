@@ -1,6 +1,8 @@
 package com.example.newnewhellokittyquiz
 
-//import Question
+import Question
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,8 +12,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-
+import com.example.newnewhellokittyquiz.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
@@ -19,26 +22,26 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prevButton: ImageButton
     private lateinit var nextButton: ImageButton
     private lateinit var questionText: TextView
-    private lateinit var cheatButton: Button
+    private lateinit var cheatButton: Button;
 
     private val quizViewModel: QuizViewModel by lazy {
-        ViewModelProviders.of(this).get(QuizViewModel::class.java)
+        ViewModelProviders.of(this).get(QuizViewModel::class.java);
     }
 
-    private val tag = "MainActivity"
-    private val keyIndex = "index"
+    private val TAG = "MainActivity";
+    private val keyIndex = "index";
     private val answerIndex = "answers"
     private val questionIndex = "questions"
 
-    private var questionAnswered = false
+    private var questionAnswered = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(tag, "onCreate(Bundle?) called")
+        Log.d(TAG, "onCreate(Bundle?) called")
         setContentView(R.layout.activity_main)
 
-        val currentIndex = savedInstanceState?.getInt(keyIndex, 0) ?: 0
-        quizViewModel.currentIndex = currentIndex
+        val currentIndex = savedInstanceState?.getInt(keyIndex, 0) ?: 0;
+        quizViewModel.currentIndex = currentIndex;
 
         trueButton=findViewById(R.id.true_button)
         falseButton=findViewById(R.id.false_button)
@@ -46,55 +49,55 @@ class MainActivity : AppCompatActivity() {
         nextButton=findViewById(R.id.next_button)
         questionText=findViewById(R.id.question_text)
 
-        cheatButton=findViewById(R.id.cheat_button)
+        cheatButton=findViewById(R.id.cheat_button);
 
-        val getResult =
+        var getResult =
             registerForActivityResult(
                 ActivityResultContracts.StartActivityForResult()) {
                 if(it.resultCode == RESULT_OK) {
-                    quizViewModel.isCheater = it.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
-                    quizViewModel.cheatedList[quizViewModel.currentIndex] = quizViewModel.isCheater
+                    quizViewModel.isCheater = it.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false;
+                    quizViewModel.cheatedList[quizViewModel.currentIndex] = quizViewModel.isCheater;
                 }
             }
 
         fun updateQuestions() {
-            val id = quizViewModel.currentQuestionText
-            questionText.setText(id)
-            questionAnswered = false
+            val id = quizViewModel.currentQuestionText;
+            questionText.setText(id);
+            questionAnswered = false;
         }
 
         fun checkAnswer(userAnswer: Boolean) {
-            val correctAnswer = quizViewModel.currentQuestionAnswer
+            val correctAnswer = quizViewModel.currentQuestionAnswer;
 
             if (quizViewModel.cheatedList[quizViewModel.currentIndex]) {
-                val toastText = Toast.makeText(this, R.string.cheated_toast, Toast.LENGTH_LONG)
+                var toastText = Toast.makeText(this, R.string.cheated_toast, Toast.LENGTH_LONG);
                 toastText.show()
             } else if (userAnswer == correctAnswer) {
-                val toastText = Toast.makeText(this, R.string.correct_toast,Toast.LENGTH_LONG)
-                toastText.setGravity(Gravity.TOP,0,0)
-                toastText.show()
-                quizViewModel.numCorrectAnswers += 1
+                var toastText = Toast.makeText(this, R.string.correct_toast,Toast.LENGTH_LONG);
+                toastText.setGravity(Gravity.TOP,0,0);
+                toastText.show();
+                quizViewModel.numCorrectAnswers += 1;
 
             } else {
-                val toastText = Toast.makeText(this, R.string.incorrect_toast,Toast.LENGTH_LONG)
-                toastText.setGravity(Gravity.TOP,0,0)
-                toastText.show()
+                var toastText = Toast.makeText(this, R.string.incorrect_toast,Toast.LENGTH_LONG);
+                toastText.setGravity(Gravity.TOP,0,0);
+                toastText.show();
 
             }
 
-            quizViewModel.questionCounter++
+            quizViewModel.questionCounter++;
             if (quizViewModel.questionCounter == quizViewModel.questionListSize) {
-                val finalScore = (quizViewModel.numCorrectAnswers.toDouble() / quizViewModel.questionListSize) * 100
-                val finalScoreString = "%.2f".format(finalScore)
-                val toastText = Toast.makeText(this, "Final Score: $finalScoreString%", Toast.LENGTH_LONG)
-                toastText.setGravity(Gravity.TOP,0,0)
-                toastText.show()
-                quizViewModel.numCorrectAnswers = 0
+                var finalScore = (quizViewModel.numCorrectAnswers.toDouble() / quizViewModel.questionListSize) * 100;
+                var finalScoreString = "%.2f".format(finalScore);
+                var toastText = Toast.makeText(this, "Final Score: $finalScoreString%", Toast.LENGTH_LONG);
+                toastText.setGravity(Gravity.TOP,0,0);
+                toastText.show();
+                quizViewModel.numCorrectAnswers = 0;
 
-                quizViewModel.cheatedList[0] = false
-                quizViewModel.cheatedList[1] = false
-                quizViewModel.cheatedList[2] = false
-                quizViewModel.cheatedList[3] = false
+                quizViewModel.cheatedList[0] = false;
+                quizViewModel.cheatedList[1] = false;
+                quizViewModel.cheatedList[2] = false;
+                quizViewModel.cheatedList[3] = false;
             }
         }
 
@@ -102,74 +105,74 @@ class MainActivity : AppCompatActivity() {
 
         trueButton.setOnClickListener {
             if (!questionAnswered) {
-                checkAnswer(true)
-                questionAnswered = true
+                checkAnswer(true);
+                questionAnswered = true;
             }
         }
 
         falseButton.setOnClickListener {
             if (!questionAnswered) {
-                checkAnswer(false)
-                questionAnswered = true
+                checkAnswer(false);
+                questionAnswered = true;
             }
 
         }
 
         prevButton.setOnClickListener {
-            quizViewModel.prevQuestion()
-            updateQuestions()
+            quizViewModel.prevQuestion();
+            updateQuestions();
         }
 
         nextButton.setOnClickListener {
-            quizViewModel.nextQuestion()
+            quizViewModel.nextQuestion();
             updateQuestions()
         }
 
         questionText.setOnClickListener {
-            quizViewModel.nextQuestion()
+            quizViewModel.nextQuestion();
             updateQuestions()
         }
 
 
         cheatButton.setOnClickListener {
             //If Pressed, change Activity to CheatActivity
-            val answerIsTrue = quizViewModel.currentQuestionAnswer
+            val answerIsTrue = quizViewModel.currentQuestionAnswer;
             val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
-            getResult.launch(intent)
+            getResult.launch(intent);
 
         }
     }
 
     override fun onStart() {
-        super.onStart()
-        Log.d(tag, "onStart() called")
+        super.onStart();
+        Log.d(TAG, "onStart() called");
     }
 
     override fun onPause() {
-        super.onPause()
-        Log.d(tag, "onPause() called")
+        super.onPause();
+        Log.d(TAG, "onPause() called");
     }
 
     override fun onResume() {
-        super.onResume()
-        Log.d(tag, "onResume() called")
+        super.onResume();
+        Log.d(TAG, "onResume() called");
     }
 
     override fun onStop() {
-        super.onStop()
-        Log.d(tag, "onStop() called")
+        super.onStop();
+        Log.d(TAG, "onStop() called");
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-        Log.d(tag, "onDestroy() called")
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() called");
     }
 
     override fun onSaveInstanceState (savedInstanceState: Bundle) {
-        super.onSaveInstanceState(savedInstanceState)
-        Log.i(tag, "onSaveInstanceState")
-        savedInstanceState.putInt(keyIndex, quizViewModel.currentIndex)
-        savedInstanceState.putInt(answerIndex, quizViewModel.numCorrectAnswers)
-        savedInstanceState.putInt(questionIndex, quizViewModel.questionCounter)
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putInt(keyIndex, quizViewModel.currentIndex);
+        savedInstanceState.putInt(answerIndex, quizViewModel.numCorrectAnswers);
+        savedInstanceState.putInt(questionIndex, quizViewModel.questionCounter);
     }
 }
