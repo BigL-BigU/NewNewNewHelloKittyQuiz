@@ -1,43 +1,39 @@
 package com.example.newnewhellokittyquiz
 
 import Question
-import androidx.lifecycle.ViewModel;
-import com.example.newnewhellokittyquiz.R
+import androidx.lifecycle.ViewModel
 
+// saves the current information for when a screen update occurs
 class QuizViewModel: ViewModel() {
-    private val questionList = listOf(
+    var correctAnswers = 0
+    var questionCount = 0
+    var counter = 0
+
+    private val questionBank = listOf(
         Question(R.string.kitty1, true),
         Question(R.string.kitty2, false),
         Question(R.string.kitty3, false),
         Question(R.string.kitty4, true)
     )
 
-    var cheatedList = arrayOf(false, false, false, false);
-
-    var currentIndex = 0;
-    var numCorrectAnswers = 0;
-    var questionCounter = 0;
-
-    var isCheater = false;
-
-
     val currentQuestionAnswer: Boolean
-        get() = questionList[currentIndex].answer;
-    val currentQuestionText: Int
-        get() = questionList[currentIndex].textReID;
-    val questionListSize: Int
-        get() = questionList.size;
+        get() = questionBank[currentIndex].answer
 
-    fun nextQuestion() {
-        currentIndex = (currentIndex + 1) % questionList.size;
+    val currentQuestionText: Int
+        get() = questionBank[currentIndex].textReID
+
+    val questionBankSize: Int
+        get() = questionBank.size
+
+    fun moveToNext(){
+        currentIndex = (currentIndex + 1) % questionBank.size
     }
 
-    fun prevQuestion() {
-        currentIndex -= 1;
-        if (currentIndex < 0) {
-            currentIndex = questionList.size - 1;
+    fun moveToPrev(){
+        currentIndex -= 1
+        if(currentIndex < 0){
+            currentIndex = questionBank.size - 1
         }
     }
-
 
 }

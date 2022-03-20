@@ -15,4 +15,6 @@
     <string name="warning_text">Are you sure you want to do this?</string>
     <string name="show_answer_button">Show me the Answer!</string>
     <string name="cheated_toast">Cheaters don\'t win</string>
+    <string name="cheater">Cheaters never win!</string>
+    <string name="answer">Answer</string>
 </resources>
